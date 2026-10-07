@@ -23,3 +23,12 @@ func findInstalledVersion() (string, error) {
 
 	return "", fmt.Errorf("Couldn't find installed version");
 }
+
+func findLatestVersion() (string, error) {
+	data, err := fetchDownloadData()	
+	if err != nil {
+		return "", err
+	}
+
+	return data.Version, nil
+}

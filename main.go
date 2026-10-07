@@ -12,4 +12,7 @@ func main() {
 	}
 
 	fmt.Println(data)
+
+	version, err := findInstalledVersion()
+	fmt.Println(version)
 }

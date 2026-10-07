@@ -5,8 +5,5 @@ import (
 )
 
 func main() {
-	installed, _ := findInstalledVersion()
-	latest, _ := findLatestVersion()
-
-	fmt.Println(installed, latest)
+	fmt.Println(isInstalledBehind())
 }

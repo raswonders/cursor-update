@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -31,4 +32,46 @@ func findLatestVersion() (string, error) {
 	}
 
 	return data.Version, nil
+}
+
+func isInstalledBehind() (bool, error) {
+	installed, err := findInstalledVersion()
+	if err != nil {
+		return false, err
+	}
+	latest, err := findLatestVersion()
+	if err != nil {
+		return false, err
+	}
+
+	return isVersionLess(installed, latest) 
+}
+
+func isVersionLess(a, b string) (bool, error) {
+	as := strings.Split(a, ".")
+	bs := strings.Split(b, ".")
+
+	n := max(len(as), len(bs))
+	for i := range n {
+		var ai, bi int
+		var err error
+		if i < len(as[i]) {
+			ai, err = strconv.Atoi(as[i])
+			if err != nil {
+				return false, err
+			}
+		}
+
+		if i < len(bs[i]) {
+			bi, err = strconv.Atoi(bs[i])
+			if err != nil {
+				return false, err
+			}
+		}
+
+		if ai != bi {
+			return ai < bi, nil
+		}
+	}
+	return false, nil
 }

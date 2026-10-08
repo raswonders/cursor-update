@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
 	config := config{
 		cursorUrl: "https://cursor.com/api/download?platform=linux-x64&releaseTrack=stable",
 		installed: versionLocal{
-			path: "/opt/cursor/cursor.AppImage",
+			path: "/home/rhepner/Applications/cursor/cursor.AppImage",
 		},
 		latest: version{},
 	}
@@ -26,5 +27,21 @@ func main() {
 		}
 		fmt.Println("Cursor was downloaded.")
 
+		src := "cursor.AppImage"
+		dst := config.installed.path
+
+		if _, err := os.Stat(dst); err == nil {
+			if err := os.Rename(dst, dst+".bak"); err != nil {
+				fmt.Printf("Couldn't create backup for installed image: %v", err)
+				return
+			}
+		}
+
+		if err := os.Rename(src, dst); err != nil {
+			fmt.Printf("Couldn't latest image to destination: %v", err)
+			return
+		} 
+
+		fmt.Printf("Latest cursor.AppImage (v%s) was deployed", config.latest.version)
 	}
 }

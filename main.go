@@ -12,5 +12,19 @@ func main() {
 		},
 		latest: version{},
 	}
-	fmt.Println(isInstalledBehind(&config))
+
+  needsUpdate, err := isInstalledBehind(&config) 
+	if err != nil {
+		fmt.Printf("Couldn't verify versions: %v", err)
+		return
+	}
+
+	if needsUpdate {
+		err := fetchLatestAppImage(&config)
+		if err != nil {
+			fmt.Printf("Couldn't download cursor's image: %v", err)
+		}
+		fmt.Println("Cursor was downloaded.")
+
+	}
 }

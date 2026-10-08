@@ -11,20 +11,22 @@ type data struct {
 	Version string			`json:"version"`
 } 
 
-func fetchDownloadData() (data, error) {
-	url := "https://cursor.com/api/download?platform=linux-x64&releaseTrack=stable"
-	res, err := http.Get(url)
+func fetchLatestData(conf *config) error {
+	res, err := http.Get(conf.cursorUrl)
 	if err != nil {
-		return data{}, err
+		return err
 	}
 
 	dataRaw, err := io.ReadAll(res.Body)
 	if err != nil {
-		return data{}, err
+		return err
 	}
 
 	var data data;
 	json.Unmarshal(dataRaw, &data)
-
-	return data, nil 
+	conf.latest = version{
+		version: data.Version,
+		url: data.DownloadUrl,
+	}
+	return nil 
 }

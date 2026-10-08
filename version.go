@@ -7,44 +7,37 @@ import (
 	"strings"
 )
 
-func findInstalledVersion() (string, error) {
+func fetchInstalledData(conf *config) error {
 	prefix := "X-AppImage-Version="
-	out, err := exec.Command("7z", "e", "-so", "/opt/cursor/cursor.AppImage", "cursor.desktop").Output()
+	out, err := exec.Command("7z", "e", "-so", conf.installed.path, "cursor.desktop").Output()
 	if err != nil {
-		return "", err
+		return err
 	} 
 
 	lines := strings.Split(string(out), "\n")
 	for _, line := range lines {
 		version, ok := strings.CutPrefix(line, prefix)	
 		if ok {
-			return version, nil
+			conf.installed.version = version
+			return nil
 		}
 	}
 
-	return "", fmt.Errorf("Couldn't find installed version");
+	return fmt.Errorf("Couldn't find installed version");
 }
 
-func findLatestVersion() (string, error) {
-	data, err := fetchDownloadData()	
-	if err != nil {
-		return "", err
-	}
-
-	return data.Version, nil
-}
-
-func isInstalledBehind() (bool, error) {
-	installed, err := findInstalledVersion()
-	if err != nil {
-		return false, err
-	}
-	latest, err := findLatestVersion()
+func isInstalledBehind(conf *config) (bool, error) {
+	err := fetchInstalledData(conf)
 	if err != nil {
 		return false, err
 	}
 
-	return isVersionLess(installed, latest) 
+	err = fetchLatestData(conf)
+	if err != nil {
+		return false, err
+	}
+
+	return isVersionLess(conf.installed.version, conf.latest.version) 
 }
 
 func isVersionLess(a, b string) (bool, error) {

@@ -38,10 +38,10 @@ func main() {
 		}
 
 		if err := os.Rename(src, dst); err != nil {
-			fmt.Printf("Couldn't latest image to destination: %v", err)
+			fmt.Printf("Couldn't move latest image to destination: %v", err)
 			return
 		} 
 
-		fmt.Printf("Latest cursor.AppImage (v%s) was deployed", config.latest.version)
+		fmt.Printf("Latest cursor.AppImage (v%s) was installed", config.latest.version)
 	}
 }

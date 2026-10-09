@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"os"
 )
-// /home/rhepner/Applications/cursor/cursor.AppImage
+
 func main() {
-	path := flag.String("path", "", "path to the installed Cursor AppImage")
+	path := flag.String("path", os.Getenv("CURSOR_APPIMAGE"), "path to the installed Cursor AppImage")
 	platform := flag.String("platform", "linux-x64", "download platform")
 	track := flag.String("track", "stable", "release track")
 	flag.Parse()
 
 	if *path == "" {
-    fmt.Fprintln(os.Stderr, "path is required")
+    fmt.Fprintln(os.Stderr, "path is required, pass it via flag or env. var CURSOR_APPIMAGE")
     flag.Usage()
     os.Exit(2)
   }

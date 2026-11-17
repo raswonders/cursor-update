@@ -16,6 +16,7 @@ var DotSpinner = Spinner{
 }
 
 func ShowSpinner(spinner Spinner, msg string) {
+	fmt.Println()
 	fmt.Printf("\033[?25l")
 	for i := 0;;i = (i + 1) % len(spinner.Frames) {
 		fmt.Printf("\r%s%s", spinner.Frames[i], msg)

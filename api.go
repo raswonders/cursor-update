@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -33,6 +34,8 @@ func fetchLatestData(conf *config) error {
 }
 
 func fetchLatestAppImage(conf *config) error {
+	ShowSpinner(DotSpinner, fmt.Sprintf("Downloading Cursor version %v", conf.latest.version))
+
 	res, err := http.Get(conf.latest.url)
 	if err != nil {
 		return err

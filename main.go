@@ -12,8 +12,6 @@ func main() {
 	track := flag.String("track", "stable", "release track")
 	flag.Parse()
 
-	ShowSpinner(DotSpinner, "Downloading Cursor")
-
 	if *path == "" {
     fmt.Fprintln(os.Stderr, "path is required, pass it via flag or env. var CURSOR_APPIMAGE")
     flag.Usage()
@@ -59,5 +57,6 @@ func main() {
 		fmt.Printf("Latest cursor.AppImage (v%s) was installed\n", config.latest.version)
 		os.Exit(0)
 	}
-	fmt.Printf("Latest version (v%s) already installed.\n", config.installed.version)
+	fmt.Println()
+	fmt.Println("Latest version is already installed")
 }

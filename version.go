@@ -31,11 +31,13 @@ func isInstalledBehind(conf *config) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	fmt.Printf("Installed version: \t%v\n", conf.installed.version)
 
 	err = fetchLatestData(conf)
 	if err != nil {
 		return false, err
 	}
+	fmt.Printf("Latest version: \t%v\n", conf.latest.version)
 
 	return isVersionLess(conf.installed.version, conf.latest.version) 
 }

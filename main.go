@@ -12,6 +12,8 @@ func main() {
 	track := flag.String("track", "stable", "release track")
 	flag.Parse()
 
+	ShowSpinner(DotSpinner, "Downloading Cursor")
+
 	if *path == "" {
     fmt.Fprintln(os.Stderr, "path is required, pass it via flag or env. var CURSOR_APPIMAGE")
     flag.Usage()

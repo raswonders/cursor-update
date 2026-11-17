@@ -37,7 +37,6 @@ func main() {
 		if err != nil {
 			fmt.Printf("Couldn't download cursor's image: %v\n", err)
 		}
-		fmt.Println("Cursor was downloaded.")
 
 		src := "cursor.AppImage"
 		dst := config.installed.path
@@ -54,7 +53,7 @@ func main() {
 			os.Exit(1)
 		} 
 
-		fmt.Printf("Latest cursor.AppImage (v%s) was installed\n", config.latest.version)
+		fmt.Printf("Latest cursor.AppImage v%s was installed\n", config.latest.version)
 		os.Exit(0)
 	}
 	fmt.Println()

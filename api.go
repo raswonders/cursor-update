@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"sync"
 )
 
 type data struct {
@@ -34,8 +35,17 @@ func fetchLatestData(conf *config) error {
 }
 
 func fetchLatestAppImage(conf *config) error {
-	ShowSpinner(DotSpinner, fmt.Sprintf("Downloading Cursor version %v", conf.latest.version))
-
+	stop := make(chan struct{})
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		ShowSpinner(DotSpinner, fmt.Sprintf("Downloading latest version %v", conf.latest.version), stop)
+	}()
+	defer func() {
+		close(stop)
+		wg.Wait()
+	}()
 	res, err := http.Get(conf.latest.url)
 	if err != nil {
 		return err
